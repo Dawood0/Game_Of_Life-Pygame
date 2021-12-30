@@ -44,6 +44,16 @@ def getNeighbors(rect):     # rect is a tuple of x,y coordinates for the rectang
 
     return neighbors
 
+def getOrthogonalNeighbors(rect):     # rect is a tuple of x,y coordinates for the rectangle
+    neighbors=[]
+    x,y=rect
+    if y-blockSize>=0:neighbors.append((x,y-blockSize))
+    if y+blockSize<WINDOW_HEIGHT:neighbors.append((x,y+blockSize))
+    if x-blockSize>=0:neighbors.append((x-blockSize,y))
+    if x+blockSize<WINDOW_WIDTH:neighbors.append((x+blockSize,y))
+
+    return neighbors
+
 
 white_rects=[]
 black_rects=[]                  # rectangles returning to black after being pressed while white
@@ -98,18 +108,24 @@ while True:
                     die=[]
                     cnt=0
                     l=getNeighbors(ii)
+                    ll=getOrthogonalNeighbors(ii)
+                    print(ll)
 
                     for i in l:
                         if i in white_rects:
-                            print(i)
                             cnt+=1
 
-                    if cnt<2:
+                    if cnt<2:                       # making blocks die
                         black_rects.append(ii)
                         # if ii not in black_rects:black_rects.append(ii)
                         # else:black_rects.remove(ii)
                         # try:white_rects.remove(ii)
                         # except:pass
+                    else:                           # birth of white block neighbors
+
+                        for orthoneighbor in ll:
+                            if orthoneighbor not in white_rects:
+                                birth.append(orthoneighbor)
 
 
 
@@ -121,6 +137,19 @@ while True:
 
     for x,y in white_rects:                 # drawing the white rectangle in the pressed rectangle
         drawRect(x,y)
+
+    for i in range(len(birth)):
+        x, y = birth.pop()
+        drawRect(x,y)
+        white_rects.append((x,y))
+
+
+    # for i in range(len(white_rects)):
+    #     x, y = white_rects.pop()
+    #     drawRect(x,y)
+    #     try:black_rects.remove((x,y))
+    #     except:pass
+
     # for x, y in black_rects:                # redrawing the black rectangle in the repressed rectangle
     #     drawRect(x, y,0,BLACK)
     #     drawRect(x, y,1)
