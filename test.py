@@ -61,6 +61,7 @@ black_rects=[]                  # rectangles returning to black after being pres
 birth=[]
 die=[]
 
+black_neighbors=[]
 while True:
     drawGrid()
     for event in pygame.event.get():
@@ -108,20 +109,34 @@ while True:
                     die=[]
                     cnt=0
                     l=getNeighbors(ii)
-                    ll=getOrthogonalNeighbors(ii)
-                    print(ll)
+                    # ll=getOrthogonalNeighbors(ii)
+                    # print(ll)
 
-                    for i in l:
+                    for i in l:                         # checking the neighbors if white or black
                         if i in white_rects:
                             cnt+=1
+                        else:
+                            blk_neigh=getNeighbors(i)
+                            cnt2=0
+                            for u in blk_neigh:
+                                if u in white_rects: cnt2+=1
+                            if cnt2>=3 and i not in birth:
+                                if i not in white_rects:
+                                    birth.append(i)
+                                else:
+                                    black_rects.append(i)
+                                    white_rects.remove(i)
+
+                            elif cnt2>=3 and i in birth:
+                                birth.remove(i)
 
                     if cnt<2:                       # making blocks die
-                        black_rects.append(ii)  
-                    else:                           # birth of white block neighbors
-
-                        for orthoneighbor in ll:
-                            if orthoneighbor not in white_rects:
-                                birth.append(orthoneighbor)
+                        black_rects.append(ii)
+                    # else:                           # birth of white block neighbors
+                    #
+                    #     for orthoneighbor in ll:
+                    #         if orthoneighbor not in white_rects:
+                    #             birth.append(orthoneighbor)
 
 
 
@@ -136,13 +151,15 @@ while True:
 
 
     #### wrong idea implemented about orthogonal birth
-    # for i in range(len(birth)):
-    #     x, y = birth.pop()
-    #     drawRect(x,y)
-    #     if (x,y) not in white_rects:white_rects.append((x,y))
-    #     else:
-    #         # white_rects.remove((x,y))
-    #         black_rects.append((x,y))
+    for i in range(len(birth)):
+        x, y = birth.pop()
+
+        if (x,y) not in white_rects:
+            drawRect(x, y)
+            white_rects.append((x,y))
+        else:
+            white_rects.remove((x,y))
+            black_rects.append((x,y))
 
 
     for i in range(len(black_rects)):
