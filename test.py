@@ -79,24 +79,33 @@ while True:
                 black_rects.append((x, y))
                 white_rects.remove((x,y))
 
+
+            for x, y in black_rects:  # redrawing the black rectangle in the repressed rectangle
+                drawRect(x, y, 0, BLACK)
+                drawRect(x, y, 1)
+            black_rects=[]
+
+
+
         if event.type == pygame.KEYUP:                # next step in the game (next state)
             if event.key == pygame.K_SPACE:
                 for ii in white_rects:
                     die=[]
                     cnt=0
                     l=getNeighbors(ii)
+
                     for i in l:
                         if i in white_rects:
+                            print(i)
                             cnt+=1
-                    if cnt<2:
-                        die.append(ii)
-                    for x, y in die:
-                        drawRect(x, y)
 
+                    if cnt<2:
+                        black_rects.append(ii)
                         # if ii not in black_rects:black_rects.append(ii)
                         # else:black_rects.remove(ii)
                         # try:white_rects.remove(ii)
                         # except:pass
+                # white_rects=[]
 
 
 
@@ -110,9 +119,9 @@ while True:
     for x, y in black_rects:                # redrawing the black rectangle in the repressed rectangle
         drawRect(x, y,0,BLACK)
         drawRect(x, y,1)
-    for x,y in white_rects:                 # removing the stuck blocks
-        if (x,y) in black_rects:
-            black_rects.remove((x,y))
+    # for x,y in white_rects:                 # removing the stuck blocks
+    #     if (x,y) in black_rects:
+    #         black_rects.remove((x,y))
 
 
     pygame.display.update()
