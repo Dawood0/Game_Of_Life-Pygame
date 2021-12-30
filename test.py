@@ -116,11 +116,7 @@ while True:
                             cnt+=1
 
                     if cnt<2:                       # making blocks die
-                        black_rects.append(ii)
-                        # if ii not in black_rects:black_rects.append(ii)
-                        # else:black_rects.remove(ii)
-                        # try:white_rects.remove(ii)
-                        # except:pass
+                        black_rects.append(ii)  
                     else:                           # birth of white block neighbors
 
                         for orthoneighbor in ll:
@@ -138,27 +134,23 @@ while True:
     for x,y in white_rects:                 # drawing the white rectangle in the pressed rectangle
         drawRect(x,y)
 
-    for i in range(len(birth)):
-        x, y = birth.pop()
-        drawRect(x,y)
-        white_rects.append((x,y))
 
-
-    # for i in range(len(white_rects)):
-    #     x, y = white_rects.pop()
+    #### wrong idea implemented about orthogonal birth
+    # for i in range(len(birth)):
+    #     x, y = birth.pop()
     #     drawRect(x,y)
-    #     try:black_rects.remove((x,y))
-    #     except:pass
+    #     if (x,y) not in white_rects:white_rects.append((x,y))
+    #     else:
+    #         # white_rects.remove((x,y))
+    #         black_rects.append((x,y))
 
-    # for x, y in black_rects:                # redrawing the black rectangle in the repressed rectangle
-    #     drawRect(x, y,0,BLACK)
-    #     drawRect(x, y,1)
-    #
+
     for i in range(len(black_rects)):
         x,y=black_rects.pop()
         drawRect(x, y,0,BLACK)
         drawRect(x, y,1)
-        white_rects.remove((x,y))
+        try:white_rects.remove((x,y))
+        except: pass
 
 
 
