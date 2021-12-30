@@ -1,3 +1,5 @@
+import time
+
 import pygame
 import sys
 
@@ -83,7 +85,10 @@ while True:
             for x, y in black_rects:  # redrawing the black rectangle in the repressed rectangle
                 drawRect(x, y, 0, BLACK)
                 drawRect(x, y, 1)
-            black_rects=[]
+
+
+
+
 
 
 
@@ -105,7 +110,7 @@ while True:
                         # else:black_rects.remove(ii)
                         # try:white_rects.remove(ii)
                         # except:pass
-                # white_rects=[]
+
 
 
 
@@ -116,14 +121,19 @@ while True:
 
     for x,y in white_rects:                 # drawing the white rectangle in the pressed rectangle
         drawRect(x,y)
-    for x, y in black_rects:                # redrawing the black rectangle in the repressed rectangle
+    # for x, y in black_rects:                # redrawing the black rectangle in the repressed rectangle
+    #     drawRect(x, y,0,BLACK)
+    #     drawRect(x, y,1)
+    #
+    for i in range(len(black_rects)):
+        x,y=black_rects.pop()
         drawRect(x, y,0,BLACK)
         drawRect(x, y,1)
-    # for x,y in white_rects:                 # removing the stuck blocks
-    #     if (x,y) in black_rects:
-    #         black_rects.remove((x,y))
+        white_rects.remove((x,y))
 
 
+
+    # time.sleep(0.3)
     pygame.display.update()
 
 
