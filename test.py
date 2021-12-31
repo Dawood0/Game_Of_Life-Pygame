@@ -109,8 +109,7 @@ while True:
                     die=[]
                     cnt=0
                     l=getNeighbors(ii)
-                    # ll=getOrthogonalNeighbors(ii)
-                    # print(ll)
+
 
                     for i in l:                         # checking the neighbors if white or black
                         if i in white_rects:
@@ -120,7 +119,7 @@ while True:
                             cnt2=0
                             for u in blk_neigh:
                                 if u in white_rects: cnt2+=1
-                            if cnt2>=3 and i not in birth:
+                            if cnt2==3 and i not in birth:
                                 if i not in white_rects:
                                     birth.append(i)
                                 else:
@@ -130,13 +129,10 @@ while True:
                             elif cnt2>=3 and i in birth:
                                 birth.remove(i)
 
-                    if cnt<2:                       # making blocks die
+
+                    if cnt<2 or cnt>3:                       # making blocks die
                         black_rects.append(ii)
-                    # else:                           # birth of white block neighbors
-                    #
-                    #     for orthoneighbor in ll:
-                    #         if orthoneighbor not in white_rects:
-                    #             birth.append(orthoneighbor)
+
 
 
 
