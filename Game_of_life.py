@@ -2,8 +2,16 @@
 Name: Ahmed Dawood
 """
 
+"""
+click 'space' button for next move
+click 'a' button for automatic generation
+click 'r' button for resetting 
+"""
+
+
 import pygame
 import sys
+import time
 
 BLACK = (0, 0, 0)
 WHITE = (200, 200, 200)
@@ -14,7 +22,7 @@ pygame.init()
 SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 CLOCK = pygame.time.Clock()
 SCREEN.fill(BLACK)
-blockSize = 40
+blockSize = 20
 
 
 def drawGrid():
@@ -57,7 +65,7 @@ def getOrthogonalNeighbors(rect):  # rect is a tuple of x,y coordinates for the 
 
     return neighbors
 
-
+auto=False
 white_rects = []
 black_rects = []  # rectangles returning to black after being pressed while white
 
@@ -65,6 +73,34 @@ birth = []
 die = []
 
 black_neighbors = []
+
+def  run():
+    for ii in white_rects:
+        die = []
+        cnt = 0
+        l = getNeighbors(ii)
+
+        for i in l:  # checking the neighbors if white or black
+            if i in white_rects:
+                cnt += 1
+            else:
+                blk_neigh = getNeighbors(i)
+                cnt2 = 0
+                for u in blk_neigh:
+                    if u in white_rects: cnt2 += 1
+                if cnt2 == 3 and i not in birth:
+                    if i not in white_rects:
+                        birth.append(i)
+                    else:
+                        black_rects.append(i)
+                        white_rects.remove(i)
+
+                elif cnt2 >= 3 and i in birth:
+                    birth.remove(i)
+
+        if cnt < 2 or cnt > 3:  # making blocks die
+            black_rects.append(ii)
+
 while True:
     drawGrid()
     for event in pygame.event.get():
@@ -103,31 +139,19 @@ while True:
 
         if event.type == pygame.KEYUP:  # next step in the game (next state)
             if event.key == pygame.K_SPACE:
-                for ii in white_rects:
-                    die = []
-                    cnt = 0
-                    l = getNeighbors(ii)
+                run()
 
-                    for i in l:  # checking the neighbors if white or black
-                        if i in white_rects:
-                            cnt += 1
-                        else:
-                            blk_neigh = getNeighbors(i)
-                            cnt2 = 0
-                            for u in blk_neigh:
-                                if u in white_rects: cnt2 += 1
-                            if cnt2 == 3 and i not in birth:
-                                if i not in white_rects:
-                                    birth.append(i)
-                                else:
-                                    black_rects.append(i)
-                                    white_rects.remove(i)
+            if event.key == pygame.K_r:         # resetting the game
 
-                            elif cnt2 >= 3 and i in birth:
-                                birth.remove(i)
+                black_rects=white_rects+birth
+                white_rects=[]
+                birth=[]
 
-                    if cnt < 2 or cnt > 3:  # making blocks die
-                        black_rects.append(ii)
+            if event.key == pygame.K_a:
+                auto=not auto
+    if auto:
+        run()
+
 
     for x, y in white_rects:  # drawing the white rectangle in the pressed rectangle
         drawRect(x, y)
@@ -153,5 +177,5 @@ while True:
         except:
             pass
 
-    # time.sleep(0.3)
+    time.sleep(0.3)
     pygame.display.update()
