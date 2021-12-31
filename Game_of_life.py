@@ -1,4 +1,6 @@
-import time
+"""Game of life
+Name: Ahmed Dawood
+"""
 
 import pygame
 import sys
@@ -16,7 +18,6 @@ blockSize = 40
 
 
 def drawGrid():
-
     for x in range(0, WINDOW_WIDTH, blockSize):
         for y in range(0, WINDOW_HEIGHT, blockSize):
             rect = pygame.Rect(x, y, blockSize, blockSize)
@@ -25,7 +26,6 @@ def drawGrid():
 
 
 def drawRect(x, y, i=0, color=WHITE):
-
     rect = pygame.Rect(x, y, blockSize, blockSize)
     pygame.draw.rect(SCREEN, color, rect,
                      i)  # 0 is for a solid full colored rectangle , 1 is for hollow rectangle (border only)
@@ -133,6 +133,7 @@ while True:
         drawRect(x, y)
 
     #### wrong idea implemented about orthogonal birth
+    ### normal birth of nodes
     for i in range(len(birth)):
         x, y = birth.pop()
 
