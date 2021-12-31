@@ -13,8 +13,8 @@ import pygame
 import sys
 import time
 
-BLACK = (0, 0, 0)
-WHITE = (200, 200, 200)
+BLACK = (20, 20, 20)
+WHITE = (128, 128, 128)
 WINDOW_HEIGHT = 1000
 WINDOW_WIDTH = 1000
 
@@ -74,6 +74,7 @@ die = []
 
 black_neighbors = []
 
+num_of_moves=0
 def  run():
     for ii in white_rects:
         die = []
@@ -140,17 +141,22 @@ while True:
         if event.type == pygame.KEYUP:  # next step in the game (next state)
             if event.key == pygame.K_SPACE:
                 run()
+                num_of_moves+=1
+                print(num_of_moves)
 
             if event.key == pygame.K_r:         # resetting the game
 
                 black_rects=white_rects+birth
                 white_rects=[]
                 birth=[]
+                num_of_moves=0
 
             if event.key == pygame.K_a:
                 auto=not auto
     if auto:
         run()
+        num_of_moves += 1
+        print(num_of_moves)
 
 
     for x, y in white_rects:  # drawing the white rectangle in the pressed rectangle
@@ -177,5 +183,5 @@ while True:
         except:
             pass
 
-    time.sleep(0.3)
+    if auto:time.sleep(0.3)
     pygame.display.update()
